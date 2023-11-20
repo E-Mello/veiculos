@@ -1,6 +1,6 @@
-# VeiculosApp 🚗
+# Veiculos App 🚗
 
-VeiculosApp é uma aplicação React Native voltada para gerenciamento e visualização de informações sobre veículos. Esta aplicação utiliza um banco de dados em Python para armazenar e consultar dados sobre modelos, fabricantes e informações detalhadas de veículos.
+Veiculos é uma aplicação React Native voltada para gerenciamento e visualização de informações sobre veículos. Esta aplicação utiliza um banco de dados em Python para armazenar e consultar dados sobre modelos, fabricantes e informações detalhadas de veículos.
 
 ## Recursos Principais
 
@@ -18,8 +18,8 @@ VeiculosApp é uma aplicação React Native voltada para gerenciamento e visuali
 
 1. Clone este repositório:
 
-   - git clone https://github.com/seu-usuario/VeiculosApp.git
-   - cd VeiculosApp
+   - git clone https://github.com/E-Mello/veiculos.git
+   - cd Veiculos
 
 2. Instale as dependências:
 
