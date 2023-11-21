@@ -32,7 +32,7 @@ const CarsView: React.FC = () => {
   // Buscar a listagem de carros
   const fetchCars = async () => {
     try {
-      const response = await fetch(`http://192.168.0.84:5000/veiculos`, {
+      const response = await fetch(`http://192.168.0.11:5000/veiculos`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -63,13 +63,9 @@ const CarsView: React.FC = () => {
     ));
   };
 
-
-
-
-
   const createCar = async (newCarData: Partial<Veiculo>) => {
     try {
-      const response = await fetch('http://192.168.0.84:5000/veiculos', {
+      const response = await fetch('http://192.168.0.11:5000/veiculos', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +88,7 @@ const CarsView: React.FC = () => {
 
   const handleDeleteCar = async (carID: number) => {
     try {
-      const response = await fetch(`http://192.168.0.84:5000/veiculos/${carID}`, {
+      const response = await fetch(`http://192.168.0.11:5000/veiculos/${carID}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +110,7 @@ const CarsView: React.FC = () => {
     updatedCarData: Partial<Veiculo>
   ) => {
     try {
-      const response = await fetch(`http://192.168.0.84:5000/veiculos/${carId}`, {
+      const response = await fetch(`http://192.168.0.11:5000/veiculos/${carId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +144,7 @@ const CarsView: React.FC = () => {
 
   const handleEditCarWrapper = async (updatedCar: Veiculo) => {
     try {
-      const response = await fetch(`http://192.168.0.84:5000/veiculos/${updatedCar.id}`, {
+      const response = await fetch(`http://192.168.0.11:5000/veiculos/${updatedCar.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

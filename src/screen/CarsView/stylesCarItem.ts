@@ -38,6 +38,11 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 10,
     },
+    carItemView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
     button: {
         paddingHorizontal: 10,
         paddingVertical: 5,
