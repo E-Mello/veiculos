@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-    taskContainer: {
+    carContainer: {
         backgroundColor: '#ffffff',
         padding: 15,
         marginVertical: 10,
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 3,
     },
-    taskContainerCompleted: {
+    carContainerCompleted: {
         backgroundColor: '#e0e0e0',
         padding: 15,
         marginVertical: 10,
@@ -21,18 +21,18 @@ export const styles = StyleSheet.create({
         shadowRadius: 3,
         elevation: 3,
     },
-    taskTitle: {
+    carTitle: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
     },
-    taskTitleCompleted: {
+    carTitleCompleted: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
         textDecorationLine: 'line-through',
     },
-    taskItemGroupButton: {
+    carItemGroupButton: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

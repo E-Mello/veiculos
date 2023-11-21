@@ -3,13 +3,23 @@ import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { styles } from './stylesCarDetailsModal';
 
-interface TaskDetailsModalProps {
+interface CardDetailsModalProps {
     visible: boolean;
-    task: { id: string; title: string; description: string };
+    car: {
+        id: number;
+        modelo: string;
+        fabricante: string;
+        tipo_motor: string;
+        ano_modelo: number;
+        ano_fabricacao: number;
+        cor: string;
+        qtd_portas: number;
+        placa: string;
+    };
     onClose: () => void;
 }
 
-const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ visible, task, onClose }) => {
+const CarDetailModal: React.FC<CardDetailsModalProps> = ({ visible, car, onClose }) => {
     return (
         <Modal
             animationType="slide"
@@ -20,8 +30,14 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ visible, task, onCl
         >
             <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>{task.title}</Text>
-                    <Text style={styles.modalDescription}>{task.description}</Text>
+                    <Text style={styles.modalTitle}>{car.fabricante}</Text>
+                    <Text style={styles.modalDescription}>{car.modelo}</Text>
+                    <Text style={styles.modalDescription}>{car.tipo_motor}</Text>
+                    <Text style={styles.modalDescription}>{car.cor}</Text>
+                    <Text style={styles.modalDescription}>{car.qtd_portas} Portas</Text>
+                    <Text style={styles.modalDescription}>{car.placa}</Text>
+                    <Text style={styles.modalDescription}>{car.ano_fabricacao}</Text>
+                    <Text style={styles.modalDescription}>{car.ano_modelo}</Text>
                     <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                         <Text>Close</Text>
                     </TouchableOpacity>
@@ -31,4 +47,4 @@ const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({ visible, task, onCl
     );
 };
 
-export default TaskDetailsModal;
+export default CarDetailModal;

@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 
-import TaskDetailsModal from './TaskDetailsModal';
+import CarDetailsModal from './CarDetailsModal';
 import { styles } from './stylesCarItem';
 
-interface TaskItemProps {
-    task: {
-        id: string;
-        title: string;
-        description: string;
-        completed: boolean;
+interface CarItemProps {
+    car: {
+        id: number;
+        modelo: string;
+        fabricante: string;
+        tipo_motor: string;
+        ano_modelo: number;
+        ano_fabricacao: number;
+        cor: string;
+        qtd_portas: number;
+        placa: string;
     };
-    editTask: () => void;
-    deleteTask: () => Promise<void>;
-    toggleTaskCompletion: () => Promise<void>;
+    updateCar: (carId: number) => void;
+    handleDeleteCar: (carId: number) => Promise<void>; // Agora a função espera um número como argumento
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, editTask, deleteTask, toggleTaskCompletion }) => {
+
+const CarItem: React.FC<CarItemProps> = ({ car, updateCar, handleDeleteCar }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const openModal = () => {
@@ -28,35 +33,19 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, editTask, deleteTask, toggleT
     };
 
     return (
-        <View style={task.completed ? styles.taskContainerCompleted : styles.taskContainer}>
-            <Text style={task.completed ? styles.taskTitleCompleted : styles.taskTitle}>
-                {task.title}
+        <View style={styles.carContainer}>
+            <Text style={styles.carTitle}>
+                {car.id}
             </Text>
-            <View style={styles.taskItemGroupButton}>
-                <TouchableOpacity
-                    onPress={editTask}
-                    style={{ ...styles.button, ...styles.editButton }}
-                >
+            <View style={styles.carItemGroupButton}>
+                <TouchableOpacity onPress={() => updateCar(car.id)} style={{ ...styles.button, ...styles.editButton }}>
                     <Text style={styles.buttonText}>Edit</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={deleteTask}
-                    style={{ ...styles.button, ...styles.deleteButton }}
-                >
+
+                <TouchableOpacity onPress={() => handleDeleteCar(car.id)} style={{ ...styles.button, ...styles.deleteButton }}>
                     <Text style={styles.buttonText}>Delete</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={toggleTaskCompletion} // Adicione o onPress aqui
-                    style={{
-                        ...styles.button,
-                        ...styles.completeButton,
-                        backgroundColor: task.completed ? '#e0e0e0' : '#4caf50',
-                    }}
-                >
-                    <Text style={styles.buttonText}>
-                        {task.completed ? 'Unmark' : 'Mark'} as Completed
-                    </Text>
-                </TouchableOpacity>
+
                 <TouchableOpacity
                     onPress={openModal}
                     style={{ ...styles.button, ...styles.viewButton }}
@@ -64,9 +53,9 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, editTask, deleteTask, toggleT
                     <Text style={styles.buttonText}>View Details</Text>
                 </TouchableOpacity>
             </View>
-            <TaskDetailsModal visible={modalVisible} task={task} onClose={closeModal} />
+            <CarDetailsModal visible={modalVisible} car={car} onClose={closeModal} />
         </View>
     );
 };
 
-export default TaskItem;
+export default CarItem;

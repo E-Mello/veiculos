@@ -32,10 +32,19 @@ mysql = mysql.connector.connect(**db_config)
 @app.route('/veiculos', methods=['GET'])
 def get_veiculos():
     cursor = mysql.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM veiculo')
+    cursor.execute('''
+        SELECT v.id, m.nome AS modelo, f.nome AS fabricante, t.tipo_moto AS tipo_motor, 
+               v.ano_modelo, v.ano_fabricacao, v.cor, v.qtd_portas, v.placa
+        FROM veiculo v
+        JOIN modelo m ON v.id_modelo = m.id
+        JOIN fabricante f ON v.id_fabricante = f.id
+        JOIN tipo_motor t ON v.id_tipo_motor = t.id
+    ''')
     veiculos = cursor.fetchall()
+    print(veiculos)
     cursor.close()
     return jsonify(veiculos)
+
 
 # Cadastrar veículo
 

@@ -14,29 +14,29 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
   },
-  noneTasks: {
+  noneCars: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
 
-  scrollRenderTasks: {
+  scrollRenderCars: {
     marginBottom: 87,
   },
-  renderTasks: {
+  renderCars: {
     justifyContent: 'flex-start',
     top: 0,
   },
-  taskDescription: {
+  carDescription: {
     fontSize: 14,
     marginBottom: 8,
   },
-  newTaskButton: {
+  newCarButton: {
     alignItems: 'center',
     paddingTop: 10,
     paddingBottom: 10,
   },
-  taskButtons: {
+  carButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

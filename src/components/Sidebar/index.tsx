@@ -34,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ navigation }) => {
           <Text>Página Inicial</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Tasks')}
+          onPress={() => navigation.navigate('Carros')}
           style={styles.link}
         >
           <Feather name="pen-tool" size={20} color="#333" style={styles.icon} />
