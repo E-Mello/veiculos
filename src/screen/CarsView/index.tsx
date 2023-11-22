@@ -1,8 +1,10 @@
 import { Button, Modal, ScrollView, Text, TextInput, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import CarItem from './CarItem';
 import CarModal from './CarModal';
+import RegisterCar from '../../components/CarsComponents/RegisterCar';
 import { styles as styleCarModal } from './stylesCarModal'
 import { styles } from './styles';
 
@@ -21,8 +23,9 @@ interface Veiculo {
 
 const CarsView: React.FC = () => {
   const [cars, setCars] = useState<Veiculo[]>([]);
+  const [editingCarID, setEditingCarID] = useState<number | null>(null);
   const [updateCar, setUpdateCar] = useState<Veiculo | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
 
   useEffect(() => {
@@ -38,16 +41,20 @@ const CarsView: React.FC = () => {
           'Content-Type': 'application/json',
         },
       });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar os veículos: ${response.statusText}`);
+      }
+
       const data = await response.json();
-
-      setCars(data); // Certifique-se de que o backend já retorna os nomes correspondentes
-
+      setCars(data);
+      setErrorMessage(''); // Limpa a mensagem de erro caso a busca tenha sido bem-sucedida
       console.log('Veículos buscados com sucesso:', data);
-    } catch (error) {
-      console.error('Erro ao buscar os veículos:', error);
+    } catch (error: any) {
+      console.error('Erro ao buscar os veículos:', error.message);
+      setErrorMessage('Erro ao buscar os veículos. Por favor, tente novamente.'); // Define a mensagem de erro para exibir na interface
     }
   };
-
 
   const renderCars = () => {
     return cars.map(car => (
@@ -56,35 +63,11 @@ const CarsView: React.FC = () => {
         car={car}
         updateCar={() => {
           setUpdateCar(car);
-          setModalVisible(true);
         }}
         handleDeleteCar={() => handleDeleteCar(car.id)}
       />
     ));
   };
-
-  const createCar = async (newCarData: Partial<Veiculo>) => {
-    try {
-      const response = await fetch('http://192.168.0.11:5000/veiculos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newCarData), // Enviar os dados do novo carro
-      });
-
-      if (response.ok) {
-        console.log('Car created successfully.');
-        await fetchCars();
-        closeAndClearModal(); // Fechar e limpar a modal após criar o carro
-      } else {
-        console.error('Car creation failed:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error creating car:', error);
-    }
-  };
-
 
   const handleDeleteCar = async (carID: number) => {
     try {
@@ -120,26 +103,13 @@ const CarsView: React.FC = () => {
 
       if (response.ok) {
         await fetchCars(); // Atualizar a lista de carros após a edição
-        closeAndClearModal(); // Fechar e limpar a modal de edição após a atualização
+        // closeAndClearModal(); // Fechar e limpar a modal de edição após a atualização
       } else {
         console.error('Car update failed:', response.statusText);
       }
     } catch (error) {
       console.error('Error updating car:', error);
     }
-  };
-
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
-  const closeAndClearModal = () => {
-    setModalVisible(false);
-    setUpdateCar(null); // Limpar o ID de edição
   };
 
   const handleEditCarWrapper = async (updatedCar: Veiculo) => {
@@ -154,7 +124,7 @@ const CarsView: React.FC = () => {
 
       if (response.ok) {
         await fetchCars(); // Atualizar a lista de carros após a edição
-        closeAndClearModal(); // Fechar e limpar a modal de edição após a atualização
+        // closeAndClearModal(); // Fechar e limpar a modal de edição após a atualização
       } else {
         console.error('Car update failed:', response.statusText);
       }
@@ -168,31 +138,18 @@ const CarsView: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.newCarButton}>
-        <Button title="Cadastrar Novo Carro" onPress={openModal} />
-      </View>
+      {/* RegisterCar Component */}
+      <RegisterCar />
 
-      <ScrollView style={styles.scrollRenderCars}>
-        <View style={styles.renderCars}>
-          {renderCars()}
-        </View>
-      </ScrollView>
-
-      {/* Modal */}
-      {/* <CarModal
-        modalVisible={modalVisible}
-        handleEditCar={handleEditCarWrapper}
-        closeAndClearModal={closeAndClearModal}
-        saveCar={
-          editingCarsId
-            ? () => handleEditCarWrapper(editedCar) // Use o carro que será editado aqui
-            : (newCarData?: Partial<Veiculo>) => createCar(newCarData || {}) // Trata o argumento opcional
-        }
-        createCar={createCar}
-        setUpdatingCarID={setUpdatingCarID}
-        updatingCar={updatingCar}
-        key={updatingCar?.id}
-      /> */}
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : (
+        <ScrollView style={styles.scrollRenderCars}>
+          <View style={styles.renderCars}>
+            {renderCars()}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

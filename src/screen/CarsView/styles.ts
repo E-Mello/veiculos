@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
   scrollRenderCars: {
     marginBottom: 87,
   },
+  errorMessage: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
+    marginTop: 10,
+  },
   renderCars: {
     justifyContent: 'flex-start',
     top: 0,
@@ -30,11 +36,6 @@ export const styles = StyleSheet.create({
   carDescription: {
     fontSize: 14,
     marginBottom: 8,
-  },
-  newCarButton: {
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10,
   },
   carButtons: {
     flexDirection: 'row',

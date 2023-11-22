@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 # funcao para carregar as variaveis ambientes
 load_dotenv()
 
-host = os.getenv('DB_HOST')
-user = os.getenv('DB_USER')
-password = os.getenv('DB_PASSWORD')
-database = os.getenv('DB_DATABASE')
+host = os.getenv('DATABASE_HOST')
+user = os.getenv('DATABASE_USERNAME')
+password = os.getenv('DATABASE_PASSWORD')
+database = os.getenv('DATABASE')
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}},
@@ -31,19 +31,84 @@ mysql = mysql.connector.connect(**db_config)
 
 @app.route('/veiculos', methods=['GET'])
 def get_veiculos():
-    cursor = mysql.cursor(dictionary=True)
-    cursor.execute('''
-        SELECT v.id, m.nome AS modelo, f.nome AS fabricante, t.tipo_moto AS tipo_motor, 
-               v.ano_modelo, v.ano_fabricacao, v.cor, v.qtd_portas, v.placa
-        FROM veiculo v
-        JOIN modelo m ON v.id_modelo = m.id
-        JOIN fabricante f ON v.id_fabricante = f.id
-        JOIN tipo_motor t ON v.id_tipo_motor = t.id
-    ''')
-    veiculos = cursor.fetchall()
-    print(veiculos)
-    cursor.close()
-    return jsonify(veiculos)
+    try:
+        cursor = mysql.cursor(dictionary=True)
+        cursor.execute('''
+            SELECT v.id, m.nome AS modelo, f.nome AS fabricante, t.tipo_moto AS tipo_motor, 
+                   v.ano_modelo, v.ano_fabricacao, v.cor, v.qtd_portas, v.placa
+            FROM veiculo v
+            JOIN modelo m ON v.id_modelo = m.id
+            JOIN fabricante f ON v.id_fabricante = f.id
+            JOIN tipo_motor t ON v.id_tipo_motor = t.id
+        ''')
+        veiculos = cursor.fetchall()
+        return jsonify(veiculos)
+    except Exception as e:
+        return jsonify({'error': 'Erro ao recuperar veículos', 'details': str(e)}), 500
+    finally:
+        if 'cursor' in locals() and cursor is not None:
+            cursor.close()
+
+
+# Listar todos os tipo dos motores
+@app.route('/tipo_motor', methods=['GET'])
+def get_tipo_motor():
+    cursor = None  # Inicializa o cursor como None
+    try:
+        cursor = mysql.cursor(dictionary=True)
+        cursor.execute('''
+            SELECT *
+            FROM tipo_motor
+        ''')
+        tipo_motor = cursor.fetchall()
+        return jsonify(tipo_motor)
+    except Exception as e:
+        return jsonify({'error': 'Erro ao recuperar tipos de motores', 'details': str(e)}), 500
+    finally:
+        if cursor is not None:  # Verifica se o cursor foi inicializado antes de tentar fechá-lo
+            cursor.close()
+
+
+# Listar todos os modelos
+
+
+@app.route('/modelo', methods=['GET'])
+def get_modelo():
+    cursor = None
+    try:
+        cursor = mysql.cursor(dictionary=True)
+        cursor.execute('''
+            SELECT *
+            FROM modelo
+        ''')
+        modelo = cursor.fetchall()
+        return jsonify(modelo)
+    except Exception as e:
+        return jsonify({'error': 'Erro ao recuperar modelos', 'details': str(e)}), 500
+    finally:
+        if cursor is not None:
+            cursor.close()
+
+
+# Listar todos os fabricantes
+
+
+@app.route('/fabricante', methods=['GET'])
+def get_fabricante():
+    cursor = None
+    try:
+        cursor = mysql.cursor(dictionary=True)
+        cursor.execute('''
+            SELECT *
+            FROM fabricante
+        ''')
+        fabricante = cursor.fetchall()
+        return jsonify(fabricante)
+    except Exception as e:
+        return jsonify({'error': 'Erro ao recuperar fabricantes', 'details': str(e)}), 500
+    finally:
+        if cursor is not None:  # Verifica se o cursor foi inicializado antes de tentar fechá-lo
+            cursor.close()
 
 
 # Cadastrar veículo
